@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+    <title>D3 Simple Line Chart</title>
+    <!-- load the d3.js library -->     
+    <script src="http://d3js.org/d3.v4.min.js"></script>
+</head> 
+
+<style> /* set the CSS */
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+
+.toolTip {
+  position: absolute;
+  display: none;
+  min-width: 80px;
+  height: auto;
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid #6F257F;
+  padding: 14px;
+  text-align: center;
+}
+
+</style>
+
+<body>
+
+<svg style="margin-top: 50px;"></svg>
+
+<script>
+
+let data = [
+  ["1-May-12", 58.13],
+  ["30-Apr-12", 53.98],
+  ["27-Apr-12", 67.00],
+  ["26-Apr-12", 89.70],
+  ["25-Apr-12", 99.00],
+  ["24-Apr-12", 130.28],
+  ["23-Apr-12", 166.70],
+  ["20-Apr-12", 234.98],
+  ["19-Apr-12", 345.44],
+  ["18-Apr-12", 443.34],
+  ["17-Apr-12", 543.70],
+  ["16-Apr-12", 580.13],
+  ["13-Apr-12", 605.23],
+  ["12-Apr-12", 622.77],
+  ["11-Apr-12", 626.20],
+  ["10-Apr-12", 628.44],
+  ["9-Apr-12", 636.23],
+  ["5-Apr-12", 633.68],
+  ["4-Apr-12", 624.31],
+  ["3-Apr-12", 629.32],
+  ["2-Apr-12", 618.63],
+  ["30-Mar-12", 599.55],
+  ["29-Mar-12", 609.86],
+  ["28-Mar-12", 617.62],
+  ["27-Mar-12", 614.48],
+  ["26-Mar-12", 606.98],
+];
+
+// add a tooltip
+let tooltip = d3.select("body").append("div").attr("class", "toolTip");
+
+// set the dimensions and margins of the graph
+let margin = {top: 20, right: 20, bottom: 20, left: 40};
+let width = 960 - margin.left - margin.right;
+let height = 500 - margin.top - margin.bottom;
+
+// set the ranges
+let x = d3.scaleTime().range([0, width]);
+let y = d3.scaleLinear().range([height, 0]);
+
+// define the line
+let valueline = d3.line()
+    .x(function(d) { return x(d[0]); })
+    .y(function(d) { return y(d[1]); });
+
+// append a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+let svg = d3.select("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// parse the date / time
+let parseTime = d3.timeParse("%d-%b-%y");
+// changing the data
+data.forEach(function(d) {
+  d[0] = parseTime(d[0]);
+});
+
+// Scale the range of the data in the domains
+x.domain(d3.extent(data, function(d) { return d[0]; }));
+y.domain([0, d3.max(data, function(d) { return d[1]; })]);
+
+// add the valueline path.
+svg.append("path")
+   .data([data])
+   .attr("class", "line")
+   .attr("d", valueline);
+
+// add the dots with tooltips
+svg.selectAll("dot")
+    .data(data)
+    .enter()
+    .append("circle")
+    .attr("r", 3)
+    .attr("cx", function(d) { return x(d[0]); })
+    .attr("cy", function(d) { return y(d[1]); })
+    .on("mouseover", function(d) {
+      tooltip
+        .style("left", d3.event.pageX - 50 + "px")
+        .style("top", d3.event.pageY - 70 + "px")
+        .style("display", "inline-block")
+        .html(`
+          <div>${d[1]}</div>
+        `);
+    })
+    .on("mouseout", function(d){ tooltip.style("display", "none");});
+
+// Add the X Axis
+svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x));
+
+// Add the Y Axis
+svg.append("g")
+    .call(d3.axisLeft(y));
+
+
+
+</script>
+
+</body>
