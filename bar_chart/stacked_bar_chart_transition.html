@@ -28,20 +28,20 @@
 <script>
 
 let data = [
-  ["Bob", 33, 20],
-  ["Robin", 12, 10],
-  ["Anne", 41, 30],
-  ["Mark", 16, 15],
-  ["Joe", 59, 5],
-  ["Eve", 38, 45],
-  ["Karen", 21, 14],
-  ["Kirsty", 25, 7],
-  ["Chris", 30, 18],
-  ["Lisa", 47, 18],
-  ["Tom", 5, 27],
-  ["Stacy", 20, 45],
-  ["Charles", 13, 20],
-  ["Mary", 29, 40],
+  ["Bob", 33, 20, 15],
+  ["Robin", 12, 10, 5],
+  ["Anne", 41, 30, 25],
+  ["Mark", 16, 15, 30],
+  ["Joe", 59, 5, 10],
+  ["Eve", 38, 45, 10],
+  ["Karen", 21, 14, 10],
+  ["Kirsty", 25, 7, 45],
+  ["Chris", 30, 18, 5],
+  ["Lisa", 47, 18, 20],
+  ["Tom", 5, 27, 15],
+  ["Stacy", 20, 45, 30],
+  ["Charles", 13, 20, 20],
+  ["Mary", 29, 40, 15],
 ];
 
 // add a tooltip
@@ -77,6 +77,29 @@ svg.append("g")
 // add the y Axis
 svg.append("g")
   .attr('class', 'y_axis');
+
+this.setGraph(data);
+
+function setGraph(dataTemp){
+  // Scale the range of the data in the domains
+  x.domain(dataTemp.map(function(d) { return d[0]; }));
+
+  let stack = d3.stack()
+        .keys([1, 2, 3])
+        .order(d3.stackOrderNone)
+        .offset(d3.stackOffsetNone);
+
+  let graphData = stack(dataTemp);
+
+  console.log(graphData[2]);
+
+  // // min value shown in the y axis
+  // let n_min = d3.min(arr_graphData, function(d) {  return d3.min(d, function(d) { return d.y0 + d.y; }); });
+  // // max value shown in the y axis
+  // let n_max = d3.max(arr_graphData, function(d) {  return d3.max(d, function(d) { return d.y0 + d.y; }); });
+
+
+}
 
 </script>
 

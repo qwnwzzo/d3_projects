@@ -4,3 +4,9 @@
 
 ## Simple Horizontal Bar Chart with Tooltip
 ![Simple Horizontal Bar Chart](./statics/simple_horizontal_bar_chart.png)
+
+## Simple Bar Chart with Transition
+![](./statics/simple_bar_chart.gif)
+
+## Simple Horizontal Bar Chart with Transition
+![](./statics/simple_horizontal_bar_chart.gif)
