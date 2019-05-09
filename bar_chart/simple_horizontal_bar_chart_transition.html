@@ -8,8 +8,6 @@
 
 <style> /* set the CSS */
 
-.bar { fill: steelblue; }
-
 .toolTip {
   position: absolute;
   display: none;
@@ -30,20 +28,20 @@
 <script>
 
 let data = [
-  ["Bob", 33],
-  ["Robin", 12],
-  ["Anne", 41],
-  ["Mark", 16],
-  ["Joe", 59],
-  ["Eve", 38],
-  ["Karen", 21],
-  ["Kirsty", 25],
-  ["Chris", 30],
-  ["Lisa", 47],
-  ["Tom", 5],
-  ["Stacy", 20],
-  ["Charles", 13],
-  ["Mary", 29],
+  ["Bob", 33, "#5D737E"],
+  ["Robin", 12, "#FFF07C"],
+  ["Anne", 41, "#87BBA2"],
+  ["Mark", 16, "#A3F7B5"],
+  ["Joe", 59, "#40C9A2"],
+  ["Eve", 38, "#2F9C95"],
+  ["Karen", 21, "#664147"],
+  ["Kirsty", 25, "#F4C3C2"],
+  ["Chris", 30, "#E88EED"],
+  ["Lisa", 47, "#D5B9B2"],
+  ["Tom", 5, "#BFB5AF"],
+  ["Stacy", 20, "#6B2B06"],
+  ["Charles", 13, "#8093F1"],
+  ["Mary", 29, "#72DDF7"],
 ];
 
 // add a tooltip
@@ -121,6 +119,9 @@ function setGraph(dataTemp){
     .attr("y", function(d) { return y(d[0]); })
     .attr("width", function(d) {return x(d[1]); } )
     .attr("height", y.bandwidth())
+    .style("fill", function(d){
+      return d[2];
+    });
 
   svg.selectAll(".bar")
       .on("mousemove", function(d){

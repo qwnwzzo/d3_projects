@@ -8,8 +8,6 @@
 
 <style> /* set the CSS */
 
-.bar { fill: steelblue; }
-
 .toolTip {
   position: absolute;
   display: none;
@@ -25,33 +23,25 @@
 
 <body>
 
-<div>
-  <button 
-    onclick="update()"
-    style="font-size: medium; padding: 8px;">
-    Update
-  </button>
-</div>
-
 <svg></svg>
 
 <script>
 
 let data = [
-  ["Bob", 33],
-  ["Robin", 12],
-  ["Anne", 41],
-  ["Mark", 16],
-  ["Joe", 59],
-  ["Eve", 38],
-  ["Karen", 21],
-  ["Kirsty", 25],
-  ["Chris", 30],
-  ["Lisa", 47],
-  ["Tom", 5],
-  ["Stacy", 20],
-  ["Charles", 13],
-  ["Mary", 29],
+  ["Bob", 33, "#5D737E"],
+  ["Robin", 12, "#FFF07C"],
+  ["Anne", 41, "#87BBA2"],
+  ["Mark", 16, "#A3F7B5"],
+  ["Joe", 59, "#40C9A2"],
+  ["Eve", 38, "#2F9C95"],
+  ["Karen", 21, "#664147"],
+  ["Kirsty", 25, "#F4C3C2"],
+  ["Chris", 30, "#E88EED"],
+  ["Lisa", 47, "#D5B9B2"],
+  ["Tom", 5, "#BFB5AF"],
+  ["Stacy", 20, "#6B2B06"],
+  ["Charles", 13, "#8093F1"],
+  ["Mary", 29, "#72DDF7"],
 ];
 
 // add a tooltip
@@ -61,7 +51,7 @@ let tooltip = d3.select("body").append("div").attr("class", "toolTip");
 let margin = {top: 20, right: 20, bottom: 20, left: 40};
 let width = 960 - margin.left - margin.right;
 let height = 500 - margin.top - margin.bottom;
-let duration = 1000;
+let duration = 500;
 
 // set the ranges
 let x = d3.scaleBand()
@@ -90,11 +80,13 @@ svg.append("g")
 
 this.setGraph(data);
 
+setInterval(function(){ this.update(); }, 2000);
+
 
 function generateNewData(data){
   data.forEach((arr) => {
-    // random num between 1 and 100
-    arr[1] = Math.floor((Math.random() * 100) + 1);
+    // add a random num between 1 and 10
+    arr[1] += Math.floor((Math.random() * 10) + 1);
   })
 
   data.sort((a, b) => a[1] - b[1]);
@@ -127,6 +119,9 @@ function setGraph(dataTemp){
     .attr("width", x.bandwidth())
     .attr("height", function(d) {
         return height - y(d[1]);
+    })
+    .style("fill", function(d){
+      return d[2];
     });
 
   bars
