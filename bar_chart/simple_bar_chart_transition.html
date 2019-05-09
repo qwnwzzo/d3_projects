@@ -104,6 +104,12 @@ function setGraph(dataTemp){
               .data(dataTemp);
 
   bars
+    .exit()
+    .transition()
+    .duration(duration)
+    .remove();
+
+  bars
     .enter()
     .append('rect')
     .attr('class', 'bar')
@@ -124,11 +130,42 @@ function setGraph(dataTemp){
       return d[2];
     });
 
-  bars
-    .exit()
-    .transition()
-    .duration(duration)
-    .remove();
+  // - the codes between line 112 - 131 are equal to the following codes
+  // - func merge = enter + update
+  // // add new bars
+  // bars
+  //   .enter()
+  //   .append('rect')
+  //   .attr('class', 'bar')
+  //   .attr("x", function(d) {
+  //       return x(d[0]);
+  //   })
+  //   .attr("y", function(d, i) {
+  //       return y(d[1]);
+  //   })
+  //   .attr("width", x.bandwidth())
+  //   .attr("height", function(d) {
+  //       return height - y(d[1]);
+  //   })
+  //   .style("fill", function(d){
+  //     return d[2];
+  //   });
+
+  // // update the bars
+  // bars
+  //   .attr("x", function(d) {
+  //       return x(d[0]);
+  //   })
+  //   .attr("y", function(d, i) {
+  //       return y(d[1]);
+  //   })
+  //   .attr("width", x.bandwidth())
+  //   .attr("height", function(d) {
+  //       return height - y(d[1]);
+  //   })
+  //   .style("fill", function(d){
+  //     return d[2];
+  //   });
 
   svg.selectAll(".bar")
     .on("mousemove", function(d){
