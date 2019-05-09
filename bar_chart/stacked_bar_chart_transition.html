@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+    <title>D3 Simple Bar Chart</title>
+    <!-- load the d3.js library -->     
+    <script src="http://d3js.org/d3.v4.min.js"></script>
+</head> 
+
+<style> /* set the CSS */
+
+.toolTip {
+  position: absolute;
+  display: none;
+  min-width: 80px;
+  height: auto;
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid #6F257F;
+  padding: 14px;
+  text-align: center;
+}
+
+</style>
+
+<body>
+
+<svg></svg>
+
+<script>
+
+let data = [
+  ["Bob", 33, 20],
+  ["Robin", 12, 10],
+  ["Anne", 41, 30],
+  ["Mark", 16, 15],
+  ["Joe", 59, 5],
+  ["Eve", 38, 45],
+  ["Karen", 21, 14],
+  ["Kirsty", 25, 7],
+  ["Chris", 30, 18],
+  ["Lisa", 47, 18],
+  ["Tom", 5, 27],
+  ["Stacy", 20, 45],
+  ["Charles", 13, 20],
+  ["Mary", 29, 40],
+];
+
+// add a tooltip
+let tooltip = d3.select("body").append("div").attr("class", "toolTip");
+
+// set the dimensions and margins of the graph
+let margin = {top: 20, right: 20, bottom: 20, left: 40};
+let width = 960 - margin.left - margin.right;
+let height = 500 - margin.top - margin.bottom;
+let duration = 500;
+
+// set the ranges
+let x = d3.scaleBand()
+          .range([0, width])
+          .padding(0.1);
+
+let y = d3.scaleLinear()
+          .range([height, 0]);
+
+// append a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+let svg = d3.select("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// add the x Axis
+svg.append("g")
+  .attr("transform", "translate(0," + height + ")")
+  .attr('class', 'x_axis');
+
+// add the y Axis
+svg.append("g")
+  .attr('class', 'y_axis');
+
+</script>
+
+</body>
