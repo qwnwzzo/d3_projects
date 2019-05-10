@@ -44,6 +44,8 @@ let data = [
   ["Mary", 29, 40, 15],
 ];
 
+let colors = ["#66c2a5", "#fc8d62", "#8da0cb"];
+
 // add a tooltip
 let tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
@@ -80,10 +82,20 @@ svg.append("g")
 
 this.setGraph(data);
 
-function setGraph(dataTemp){
-  // Scale the range of the data in the domains
-  x.domain(dataTemp.map(function(d) { return d[0]; }));
+setInterval(function(){ this.update(); }, 1000);
 
+function generateNewData(data){
+  data.forEach((arr) => {
+    // add a random num between 1 and 10
+    arr[1] += Math.floor((Math.random() * 10) + 1);
+    arr[2] += Math.floor((Math.random() * 10) + 1);
+    arr[3] += Math.floor((Math.random() * 10) + 1);
+  })
+
+  return data;
+}
+
+function setGraph(dataTemp){
   let stack = d3.stack()
         .keys([1, 2, 3])
         .order(d3.stackOrderNone)
@@ -91,14 +103,65 @@ function setGraph(dataTemp){
 
   let graphData = stack(dataTemp);
 
-  console.log(graphData[2]);
+  // Scale the range of the data in the domains
+  x.domain(dataTemp.map(function(d) { return d[0]; }));
 
-  // // min value shown in the y axis
-  // let n_min = d3.min(arr_graphData, function(d) {  return d3.min(d, function(d) { return d.y0 + d.y; }); });
-  // // max value shown in the y axis
-  // let n_max = d3.max(arr_graphData, function(d) {  return d3.max(d, function(d) { return d.y0 + d.y; }); });
+  // min value shown in the y axis
+  let n_min = d3.min(graphData[0], function(d) { return d[1] } );
+  // max value shown in the y axis
+  let n_max = d3.max(graphData[graphData.length - 1], function(d) { return d[1] } );
+  y.domain([0, n_max]);
 
+  graphData.forEach((dataSet, index) => {
+    let bars = svg.selectAll(`.bar-${index}`)
+                .data(dataSet)
 
+    bars
+      .exit()
+      .transition()
+      .duration(duration)
+      .remove()
+
+    bars
+      .enter()
+      .append('rect')
+      .attr('class', `bar-${index}`)
+      .merge(bars)
+      .transition()
+      .duration(duration)
+      .attr("x", function(d){
+        return x(d.data[0]);
+      })
+      .attr("y", function(d){ 
+        return y(d[1]); 
+      })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d){ 
+        return y(d[0]) - y(d[1]); 
+      })
+      .attr("fill", function(d){ 
+        return colors[index]; 
+      });
+
+  })
+
+  // add the x Axis
+  svg.select('.x_axis')
+        .transition()
+        .duration(duration)
+        .call(d3.axisBottom(x));
+
+  // add the y Axis
+  svg.select('.y_axis')
+      .transition()
+      .duration(duration)
+      .call(d3.axisLeft(y));
+
+}
+
+function update(){
+  data = this.generateNewData(data);
+  this.setGraph(data);
 }
 
 </script>
