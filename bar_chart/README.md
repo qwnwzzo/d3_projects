@@ -10,3 +10,6 @@
 
 ## Simple Horizontal Bar Chart with Transition
 ![](./statics/simple_horizontal_bar_chart.gif)
+
+## Simple Stacked Bar Chart with Transition
+![](./statics/stacked_bar_chart_transition.gif)
